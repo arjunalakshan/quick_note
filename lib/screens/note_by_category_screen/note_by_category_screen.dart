@@ -111,6 +111,10 @@ class _NoteByCategoryScreenState extends State<NoteByCategoryScreen> {
                   return NoteByCategoryCard(
                     title: filterdNoteList[index].title,
                     content: filterdNoteList[index].content,
+                    viewNote: () {
+                      RoutingSetup.router
+                          .push("/view-note", extra: filterdNoteList[index]);
+                    },
                     editNote: () async {
                       _goToNoteEditScreen(filterdNoteList[index]);
                     },

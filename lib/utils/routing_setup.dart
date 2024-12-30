@@ -7,6 +7,7 @@ import 'package:quick_note/screens/home_screen/home_screen.dart';
 import 'package:quick_note/screens/note_by_category_screen/note_by_category_screen.dart';
 import 'package:quick_note/screens/notes_screen/notes_screen.dart';
 import 'package:quick_note/screens/todo_screen/todo_screen.dart';
+import 'package:quick_note/screens/view_note_details_screen/view_note_details_screen.dart';
 
 class RoutingSetup {
   static final router = GoRouter(
@@ -65,6 +66,15 @@ class RoutingSetup {
           return EditNoteScreen(
             noteModel: editNoteModel,
           );
+        },
+      ),
+      //* Note Details Screen
+      GoRoute(
+        name: "view-note",
+        path: "/view-note",
+        builder: (context, state) {
+          final NoteModel requiredNoteModel = state.extra as NoteModel;
+          return ViewNoteDetailsScreen(noteModel: requiredNoteModel);
         },
       ),
     ],

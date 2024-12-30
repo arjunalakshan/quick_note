@@ -8,12 +8,14 @@ class NoteByCategoryCard extends StatefulWidget {
   final String content;
   final Future Function() editNote;
   final Future Function() removeNote;
+  final void Function() viewNote;
   const NoteByCategoryCard({
     super.key,
     required this.title,
     required this.content,
     required this.editNote,
     required this.removeNote,
+    required this.viewNote,
   });
 
   @override
@@ -61,22 +63,30 @@ class _NoteByCategoryCardState extends State<NoteByCategoryCard> {
           SizedBox(
             height: AppConstantProperties.kDefaultPadding / 2,
           ),
-          Text(
-            widget.title,
-            style: AppTextStyles.appSubTitleStyle,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          SizedBox(
-            height: AppConstantProperties.kDefaultPadding / 2,
-          ),
-          Text(
-            widget.content,
-            style: AppTextStyles.appSubDescriptionStyle.copyWith(
-              color: AppThemeColors.kWhiteColor.withAlpha(150),
+          GestureDetector(
+            onTap: widget.viewNote,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.title,
+                  style: AppTextStyles.appSubTitleStyle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(
+                  height: AppConstantProperties.kDefaultPadding / 2,
+                ),
+                Text(
+                  widget.content,
+                  style: AppTextStyles.appSubDescriptionStyle.copyWith(
+                    color: AppThemeColors.kWhiteColor.withAlpha(150),
+                  ),
+                  maxLines: 6,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
-            maxLines: 6,
-            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
