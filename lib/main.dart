@@ -6,6 +6,7 @@ import 'package:quick_note/models/todo_model.dart';
 import 'package:quick_note/utils/app_constant_properties.dart';
 import 'package:quick_note/utils/app_theme_data.dart';
 import 'package:quick_note/utils/routing_setup.dart';
+import 'package:quick_note/widgets/inherited_widgets/todo_inherited_widget.dart';
 
 void main() async {
   //* Initialize hive
@@ -27,13 +28,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: "QuickNote",
-      theme: AppThemeData.darkTheme.copyWith(
-        textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme),
+    return TodoInheritedWidget(
+      todoList: [],
+      onChageTodo: () {},
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: "QuickNote",
+        theme: AppThemeData.darkTheme.copyWith(
+          textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme),
+        ),
+        routerConfig: RoutingSetup.router,
       ),
-      routerConfig: RoutingSetup.router,
     );
   }
 }

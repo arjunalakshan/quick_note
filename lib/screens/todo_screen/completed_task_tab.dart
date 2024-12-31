@@ -4,6 +4,7 @@ import 'package:quick_note/helpers/snackbar_helper.dart';
 import 'package:quick_note/models/todo_model.dart';
 import 'package:quick_note/services/todo_service.dart';
 import 'package:quick_note/utils/app_theme_colors.dart';
+import 'package:quick_note/widgets/inherited_widgets/todo_inherited_widget.dart';
 import 'package:quick_note/widgets/todo_screen_widgets/todo_card.dart';
 
 class CompletedTaskTab extends StatefulWidget {
@@ -43,50 +44,54 @@ class _CompletedTaskTabState extends State<CompletedTaskTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            itemCount: widget.completedTodoList.length,
-            itemBuilder: (context, index) {
-              return Dismissible(
-                key: Key(widget.completedTodoList[index].id.toString()),
-                direction: DismissDirection.startToEnd,
-                background: Container(
-                  alignment: Alignment.centerLeft,
-                  child: Icon(
-                    Icons.delete_sweep_rounded,
-                    color: AppThemeColors.kWhiteColor.withAlpha(150),
-                    size: 30,
+    return TodoInheritedWidget(
+      todoList: widget.completedTodoList,
+      onChageTodo: () {},
+      child: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              itemCount: widget.completedTodoList.length,
+              itemBuilder: (context, index) {
+                return Dismissible(
+                  key: Key(widget.completedTodoList[index].id.toString()),
+                  direction: DismissDirection.startToEnd,
+                  background: Container(
+                    alignment: Alignment.centerLeft,
+                    child: Icon(
+                      Icons.delete_sweep_rounded,
+                      color: AppThemeColors.kWhiteColor.withAlpha(150),
+                      size: 30,
+                    ),
                   ),
-                ),
-                onDismissed: (direction) {
-                  try {
-                    TodoService()
-                        .deleteTodoTask(widget.completedTodoList[index]);
-                    setState(() {
-                      widget.completedTodoList.removeAt(index);
-                    });
-                    SnackbarHelper.showSuccessSnackBar(
-                        context, "Task deleted!");
-                  } on Exception catch (e) {
-                    log(e.toString());
-                  }
-                },
-                child: TodoCard(
-                  todoModel: widget.completedTodoList[index],
-                  isMarkAsDone: widget.completedTodoList[index].isCompleted,
-                  onCheckedChange: () =>
-                      _markTodoAsPending(widget.completedTodoList[index]),
-                ),
-              );
-            },
+                  onDismissed: (direction) {
+                    try {
+                      TodoService()
+                          .deleteTodoTask(widget.completedTodoList[index]);
+                      setState(() {
+                        widget.completedTodoList.removeAt(index);
+                      });
+                      SnackbarHelper.showSuccessSnackBar(
+                          context, "Task deleted!");
+                    } on Exception catch (e) {
+                      log(e.toString());
+                    }
+                  },
+                  child: TodoCard(
+                    todoModel: widget.completedTodoList[index],
+                    isMarkAsDone: widget.completedTodoList[index].isCompleted,
+                    onCheckedChange: () =>
+                        _markTodoAsPending(widget.completedTodoList[index]),
+                  ),
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

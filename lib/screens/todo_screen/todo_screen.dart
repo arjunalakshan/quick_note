@@ -10,6 +10,7 @@ import 'package:quick_note/utils/app_constant_properties.dart';
 import 'package:quick_note/utils/app_text_styles.dart';
 import 'package:quick_note/utils/app_theme_colors.dart';
 import 'package:quick_note/utils/routing_setup.dart';
+import 'package:quick_note/widgets/inherited_widgets/todo_inherited_widget.dart';
 
 class TodoScreen extends StatefulWidget {
   const TodoScreen({super.key});
@@ -78,88 +79,92 @@ class _TodoScreenState extends State<TodoScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          onPressed: () {
-            RoutingSetup.router.pop(context);
-          },
-          icon: Icon(
-            Icons.keyboard_arrow_left_rounded,
-            size: 40,
+    return TodoInheritedWidget(
+      todoList: _fetchedTodoList,
+      onChageTodo: _getTodoList,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            onPressed: () {
+              RoutingSetup.router.pop(context);
+            },
+            icon: Icon(
+              Icons.keyboard_arrow_left_rounded,
+              size: 40,
+            ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _openPopupModel(context),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(
-              AppConstantProperties.kRoundingBorderRadius),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => _openPopupModel(context),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                AppConstantProperties.kRoundingBorderRadius),
+          ),
+          child: Icon(
+            Icons.add_rounded,
+            size: 30,
+            color: AppThemeColors.kWhiteColor,
+          ),
         ),
-        child: Icon(
-          Icons.add_rounded,
-          size: 30,
-          color: AppThemeColors.kWhiteColor,
-        ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(AppConstantProperties.kDefaultPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "To-do List",
-                style: AppTextStyles.appTitleStyle,
-              ),
-              SizedBox(
-                height: AppConstantProperties.kDefaultPadding * 2,
-              ),
-              TabBar(
-                controller: _tabController,
-                dividerHeight: 0,
-                indicatorColor: AppThemeColors.kFloatingABColor,
-                tabs: [
-                  Tab(
-                    child: Text(
-                      "Pending",
-                      style: AppTextStyles.appSubTitleStyle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  Tab(
-                    child: Text(
-                      "Completed",
-                      style: AppTextStyles.appSubTitleStyle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: AppConstantProperties.kDefaultPadding,
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: MediaQuery.sizeOf(context).height * 0.74,
-                child: TabBarView(
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.all(AppConstantProperties.kDefaultPadding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "To-do List",
+                  style: AppTextStyles.appTitleStyle,
+                ),
+                SizedBox(
+                  height: AppConstantProperties.kDefaultPadding * 2,
+                ),
+                TabBar(
                   controller: _tabController,
-                  children: [
-                    PendingTaskTab(
-                      pendingtodoList: _pendingTodoList,
-                      completedTodoList: _completedTodoList,
+                  dividerHeight: 0,
+                  indicatorColor: AppThemeColors.kFloatingABColor,
+                  tabs: [
+                    Tab(
+                      child: Text(
+                        "Pending",
+                        style: AppTextStyles.appSubTitleStyle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                    CompletedTaskTab(
-                      completedTodoList: _completedTodoList,
-                      pendingTodoList: _pendingTodoList,
+                    Tab(
+                      child: Text(
+                        "Completed",
+                        style: AppTextStyles.appSubTitleStyle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
+                SizedBox(
+                  height: AppConstantProperties.kDefaultPadding,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  height: MediaQuery.sizeOf(context).height * 0.74,
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      PendingTaskTab(
+                        pendingtodoList: _pendingTodoList,
+                        completedTodoList: _completedTodoList,
+                      ),
+                      CompletedTaskTab(
+                        completedTodoList: _completedTodoList,
+                        pendingTodoList: _pendingTodoList,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
